@@ -37,7 +37,7 @@ app.get("/api/", async (req, res) => {
     if (password === PASSWORD) {
         res.cookie("password", PASSWORD, {
           httpOnly: true,
-          secure: DEV === "1" ? true : false,
+          secure: DEV === "1" ? false : true,
           sameSite: DEV === "1" ? "lax" : "none",
           maxAge: 1000 * 60 * 60 * 24 * 7, 
         });
