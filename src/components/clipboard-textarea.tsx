@@ -20,7 +20,7 @@ const clipboardTextarea = ({value}: Props) => {
 		<div className="relative w-full flex flex-col gap-2 group">
             <Tooltip delayDuration={150} disableHoverableContent>
                     <TooltipTrigger asChild>
-                        <Button disabled={value === "Waiting for input..."} variant={'outline'} onClick={handleClipboardButtonClick} className="absolute top-8 right-3 aspect-square px-0! z-1 transition-opacity opacity-0 hover:opacity-100 group-hover:opacity-50">
+                        <Button disabled={value === "Waiting for input..."} onClick={handleClipboardButtonClick} className="absolute top-8 right-3 aspect-square px-0! z-1 transition-opacity disabled:opacity-0 opacity-0 hover:opacity-100 group-hover:opacity-50">
                             <Clipboard />
                         </Button>
                     </TooltipTrigger>
@@ -29,7 +29,7 @@ const clipboardTextarea = ({value}: Props) => {
                     </TooltipContent>
                 </Tooltip>
             <Label className="font-[400] text-xs" htmlFor={"output"}>Output</Label>
-			<Textarea className="md:text-xs h-full w-100 resize-none max-[768px]:w-full max-[768px]:h-40" id="output" value={value} disabled />
+			<Textarea className="md:text-xs h-full w-100 resize-none max-[850px]:w-full max-[850px]:h-40" id="output" value={value} disabled />
 		</div>
 	);
 };

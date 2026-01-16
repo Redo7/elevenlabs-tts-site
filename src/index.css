@@ -243,3 +243,7 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+#root > section{ /* sonner fix offset */
+    position: absolute;
+}

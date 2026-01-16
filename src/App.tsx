@@ -49,6 +49,13 @@ function App() {
         setOutput(values.stability + messageSeparator + values.originalMessage.substring(0, maxLength))
     }, [values])
 
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+      }, [])
+
     const playTestSample = async () => {
         setDisabled(true)
         const response = await fetch('/api/play-test-sample', {
@@ -68,9 +75,9 @@ function App() {
     }
 
 	return (
-		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-			<div className="flex items-stretch gap-4 w-200 h-fit max-[768px]:flex-col max-[768px]:w-full max-[768px]:px-8">
-                <Toaster position="top-center" className='!absolute'/>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <Toaster position="top-center"/>
+			<div className="flex items-stretch gap-4 w-fit h-fit max-[850px]:flex-col max-[850px]:w-full max-[850px]:px-8">
 				<div className="w-full flex flex-col gap-4 items-center">
 					<SettingSlider onChange={handleSliderChange} step={0.5} id="stability" label="Stability"  defaultValue={0.5} tooltip='Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.'>
                         <div className="flex justify-between text-[10px] text-zinc-500 font-400 mb-1">
@@ -80,19 +87,19 @@ function App() {
                         </div>
                     </SettingSlider>
 					
-                    <div className='relative mt-4 max-[768px]:w-full'>
+                    <div className='relative mt-4 max-[850px]:w-full'>
                         <div className='absolute z-1 -top-6 right-0'>
-                            <p className={`inline text-[10px] ${values.originalMessage.length > maxLength ? 'text-[#ed1b53]' : 'text-zinc-500'} font-400`}>{values.originalMessage.length}</p>
+                            <p className={`inline text-[10px] ${values.originalMessage.length > maxLength ? 'text-[#ed1b53]' : 'text-zinc-500'} font-400 transition-colors`}>{values.originalMessage.length}</p>
                             <p className='inline text-[10px] text-zinc-500 font-400'>/{maxLength}</p>
                         </div>
-                        <Textarea maxLength={maxLength} onChange={handleTextareaChange} id="originalMessage" placeholder="Your TTS message" className='md:text-xs w-100 h-40 resize-y max-[768px]:w-full'/>
+                        <Textarea maxLength={maxLength} onChange={handleTextareaChange} id="originalMessage" placeholder="Your TTS message" className='md:text-xs w-100 h-40 resize-y max-[850px]:w-full'/>
                     </div>
 					
                     <Button className='w-full' onClick={() => playTestSample()} disabled={disabled}> {disabled ? <Spinner /> : <LucidePlay fill='currentColor'/>} Play test sample </Button>
                     <p className='text-[10px] opacity-50 font-400'>The site will play a short sample which reacts to your settings to conserve on tokens spent</p>
 				</div>
 
-				<Separator orientation='vertical' className='data-[orientation=vertical]:h-auto' />
+				<Separator orientation={windowWidth <= 850 ? 'horizontal' : 'vertical'} className='data-[orientation=vertical]:h-auto data-[orientation=horizontal]:w-auto' />
 				<ClipboardTextarea value={values.originalMessage === "" ? "Waiting for input..." : output} />
 			</div>
 
