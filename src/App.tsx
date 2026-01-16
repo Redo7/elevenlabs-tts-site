@@ -106,7 +106,7 @@ function App() {
                     </div>
 					
                     <Button className='w-full' onClick={() => playTestSample()} disabled={disabled}> {disabled ? <Spinner /> : <LucidePlay fill='currentColor'/>} Play test sample </Button>
-                    <p className='text-[10px] opacity-50 font-400'>The site will play a preset sample which reacts to your settings to conserve on tokens spent</p>
+                    <p className='text-[10px] opacity-50 font-400'>The site will play a preset sample which reacts to your settings to save on tokens</p>
 				</div>
 
 				<Separator orientation={windowWidth <= 850 ? 'horizontal' : 'vertical'} className='max-h-[324px]' />
