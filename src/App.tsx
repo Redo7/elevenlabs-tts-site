@@ -20,6 +20,7 @@ function App() {
     const [output, setOutput] = useState("");
     const [disabled, setDisabled] = useState(false);
     const messageSeparator = "_"
+    const maxLength = 500 - (values.stability + messageSeparator).length;
 
     useEffect(() => {
         const sendQuery = async () => {
@@ -39,11 +40,11 @@ function App() {
     }
         
     const handleSliderChange = (id: string, value: number) => {
-        setValues((prev) => ({ ...prev, [id]: value }))
+        setValues((prev) => ({ ...prev, [id]: value, originalMessage: values.originalMessage }))
     }
     
     useEffect(() => {
-        setOutput(values.stability + messageSeparator + values.originalMessage)
+        setOutput(values.stability + messageSeparator + values.originalMessage.substring(0, maxLength))
     }, [values])
 
     const playTestSample = async () => {
@@ -78,8 +79,11 @@ function App() {
                     </SettingSlider>
 					
                     <div className='relative mt-4 max-[768px]:w-full'>
-                        <p className='absolute text-[10px] text-zinc-500 font-400 z-1 -top-6 right-0'>{values.originalMessage.length}/476</p>
-                        <Textarea maxLength={476} onChange={handleTextareaChange} id="originalMessage" placeholder="Your TTS message" className='md:text-xs w-100 h-40 resize-y max-[768px]:w-full'/>
+                        <div className='absolute z-1 -top-6 right-0'>
+                            <p className={`inline text-[10px] ${values.originalMessage.length > maxLength ? 'text-[#ed1b53]' : 'text-zinc-500'} font-400`}>{values.originalMessage.length}</p>
+                            <p className='inline text-[10px] text-zinc-500 font-400'>/{maxLength}</p>
+                        </div>
+                        <Textarea maxLength={maxLength} onChange={handleTextareaChange} id="originalMessage" placeholder="Your TTS message" className='md:text-xs w-100 h-40 resize-y max-[768px]:w-full'/>
                     </div>
 					
                     <Button className='w-full' onClick={() => playTestSample()} disabled={disabled}> {disabled ? <Spinner /> : <LucidePlay fill='currentColor'/>} Play test sample </Button>
