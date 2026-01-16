@@ -27,10 +27,12 @@ function App() {
             const params = new URLSearchParams(window.location.search);
             const password = params.get("password") ? params.get("password") : "";
             
-            await fetch(`/api/?password=${encodeURIComponent(password != null ? password : "")}`, {
+            const res = await fetch(`/api/?password=${encodeURIComponent(password != null ? password : "")}`, {
                 method: 'GET',
                 credentials: "include"
             });
+            
+            if(res.ok && params.size > 0) window.location.href = window.origin;
         }
         sendQuery();
     }, [])
