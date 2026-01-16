@@ -49,18 +49,15 @@ app.get("/api/", async (req, res) => {
 
 app.post("/api/play-test-sample/", async (req, res) => {
     try {
-        const { style, speed, similarityBoost, stability, originalMessage } = req.body;
+        const { stability, originalMessage } = req.body;
 
         let input = req.cookies.password === PASSWORD && originalMessage != "" ? originalMessage : '[sad] This is a test. [confused] or is it?';
 
         const webStream = await elevenlabs.textToSpeech.stream(voice_id, {
             text: input,
             modelId: process.env.MODEL_ID,
-            voiceSettings: {                    // Range        | Default Value
-                style: style,                     // 0.0 - 1.0    | 0
-                speed: speed,                     // 0.7 - 1.2    | 1
-                similarityBoost: similarityBoost, // 0.0 - 1.0    | 0.75
-                stability: stability              // 0.0 - 1.0    | 0.5
+            voiceSettings: {                      // Range              | Default Value
+                stability: stability              // 0.0 || 0.5 || 1.0  | 0.5
             },
         });
 

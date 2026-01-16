@@ -11,11 +11,12 @@ interface Props{
 	step?: number;
 	id: string;
 	label: string;
+    children?: React.ReactNode;
 	tooltip: string;
     onChange: (id: string, value: number) => void
 }
 
-const SettingSlider = ({min = 0.0, defaultValue = 0, max = 1.0, step = 0.01, id, label, tooltip, onChange}: Props) => {
+const SettingSlider = ({min = 0.0, defaultValue = 0, max = 1.0, step = 0.01, id, label, tooltip, onChange, children}: Props) => {
     const [currentVal, setCurrentVal] = useState<number[]>([defaultValue]);
 
     const handleChange = (newValue: number[]) => {
@@ -36,6 +37,7 @@ const SettingSlider = ({min = 0.0, defaultValue = 0, max = 1.0, step = 0.01, id,
 					<Label className="font-[400] text-xs" htmlFor={id}>{label}:</Label>
                     <p className="text-xs">{currentVal[0]}</p>
 				</div>
+                {children}
 				<Slider id={id} min={min} defaultValue={[defaultValue]} max={max} step={step} value={currentVal} onValueChange={handleChange} />
 		</div>
 	)
