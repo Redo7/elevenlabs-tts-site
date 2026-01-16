@@ -17,7 +17,7 @@ const clipboardTextarea = ({value}: Props) => {
         })
     }
 	return (
-		<div className="relative w-full flex flex-col gap-2 group">
+		<div className="relative w-full h-full max-h-[324px] flex flex-col gap-2 group max-[850px]:max-h-fit">
             <Tooltip delayDuration={150} disableHoverableContent>
                     <TooltipTrigger asChild>
                         <Button disabled={value === "Waiting for input..."} onClick={handleClipboardButtonClick} className="absolute top-8 right-3 aspect-square px-0! z-1 transition-opacity disabled:opacity-0 opacity-0 hover:opacity-100 group-hover:opacity-50">

@@ -13,8 +13,8 @@ const PORT = 3001;
 const elevenlabs = new ElevenLabsClient();
 const voice_id = process.env.VOICE_ID;
 const limiter = rateLimit({
-	windowMs: 10 * 60 * 1000,
-	max: 25,
+	windowMs: 5 * 60 * 1000,
+	max: 10,
 	standardHeaders: true, 
 	legacyHeaders: false,
 	message: { error: 'Too many requests, please try again later.' },

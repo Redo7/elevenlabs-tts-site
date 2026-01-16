@@ -9,6 +9,7 @@ import ClipboardTextarea from './components/clipboard-textarea';
 import { useEffect, useState } from 'react';
 import { Spinner } from './components/ui/spinner';
 import { Toaster } from "@/components/ui/sonner"
+import { toast } from 'sonner';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
     });
 
     const [output, setOutput] = useState("");
+    const [showRateLimitNotice, setShowRateLimitNotice] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const messageSeparator = "_"
     const maxLength = 500 - (values.stability + messageSeparator).length;
@@ -66,6 +68,13 @@ function App() {
 		});
 
 		if (response.ok) setDisabled(false);
+        if(response.status === 429){
+		    setDisabled(false);
+            setShowRateLimitNotice(true);
+            toast.warning("You're being rate limited", {
+                description: <p className='text-[12px] opacity-50 font-400'>Try again in 5 minutes.</p>
+            })
+        }
 
 		const blob = await response.blob();
 		const url = URL.createObjectURL(blob);
@@ -77,7 +86,8 @@ function App() {
 	return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <Toaster position="top-center"/>
-			<div className="flex items-stretch gap-4 w-fit h-fit max-[850px]:flex-col max-[850px]:w-full max-[850px]:px-8">
+			<div className="flex relative h-full items-center gap-4 w-fit h-fit max-[850px]:flex-col max-[850px]:w-full max-[850px]:px-8 max-[850px]:justify-center">
+                {showRateLimitNotice && <p className='absolute top-[10%] text-[10px] text-zinc-500 font-400 text-center w-full max-[850px]:top-[2%]'>The site is mostly used for formatting the end output.<br/>The audio sample will say the same sentence regardless of your input.<br/>It will only react to the slider setting change so there isn't much point in playing it over and over.</p>}
 				<div className="w-full flex flex-col gap-4 items-center">
 					<SettingSlider onChange={handleSliderChange} step={0.5} id="stability" label="Stability"  defaultValue={0.5} tooltip='Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.'>
                         <div className="flex justify-between text-[10px] text-zinc-500 font-400 mb-1">
@@ -99,11 +109,11 @@ function App() {
                     <p className='text-[10px] opacity-50 font-400'>The site will play a short sample which reacts to your settings to conserve on tokens spent</p>
 				</div>
 
-				<Separator orientation={windowWidth <= 850 ? 'horizontal' : 'vertical'} className='data-[orientation=vertical]:h-auto data-[orientation=horizontal]:w-auto' />
+				<Separator orientation={windowWidth <= 850 ? 'horizontal' : 'vertical'} className='max-h-[324px]' />
 				<ClipboardTextarea value={values.originalMessage === "" ? "Waiting for input..." : output} />
 			</div>
 
-            <div className='w-full text-[10px] text-zinc-500 font-400 absolute bottom-5 text-center cursor-default select-none'>
+            <div className='w-full text-[10px] text-zinc-500 font-400 absolute bottom-5 text-center cursor-default select-none max-[850px]:bottom-[1%]'>
                 Tip: Use tone indicators in <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[brackets]</p> to make the output more interesting.<br />
                 For example: <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[excited] This is so much fun!</p><br />
                 For more information read <a target='_blank' className='inline underline text-zinc-400 hover:text-zinc-200 transition-colors' href='https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3-alpha'>the docs</a>
