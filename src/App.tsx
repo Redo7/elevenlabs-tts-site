@@ -79,7 +79,7 @@ function App() {
 					
                     <div className='relative mt-4 max-[768px]:w-full'>
                         <p className='absolute text-[10px] text-zinc-500 font-400 z-1 -top-6 right-0'>{values.originalMessage.length}/476</p>
-                        <Textarea maxLength={476} onChange={handleTextareaChange} id="originalMessage" placeholder="Your TTS message" className='md:text-xs w-100 resize-y max-[768px]:w-full'/>
+                        <Textarea maxLength={476} onChange={handleTextareaChange} id="originalMessage" placeholder="Your TTS message" className='md:text-xs w-100 h-40 resize-y max-[768px]:w-full'/>
                     </div>
 					
                     <Button className='w-full' onClick={() => playTestSample()} disabled={disabled}> {disabled ? <Spinner /> : <LucidePlay fill='currentColor'/>} Play test sample </Button>

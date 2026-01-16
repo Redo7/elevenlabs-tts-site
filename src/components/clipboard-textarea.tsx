@@ -29,7 +29,7 @@ const clipboardTextarea = ({value}: Props) => {
                     </TooltipContent>
                 </Tooltip>
             <Label className="font-[400] text-xs" htmlFor={"output"}>Output</Label>
-			<Textarea className="md:text-xs h-full w-100 resize-none max-[768px]:w-full" id="output" value={value} disabled />
+			<Textarea className="md:text-xs h-full w-100 resize-none max-[768px]:w-full max-[768px]:h-40" id="output" value={value} disabled />
 		</div>
 	);
 };
