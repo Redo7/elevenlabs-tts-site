@@ -103,7 +103,7 @@ function App() {
 				<ClipboardTextarea value={values.originalMessage === "" ? "Waiting for input..." : output} />
 			</div>
 
-            <div className='text-[10px] text-zinc-500 font-400 absolute bottom-5 left-50% -transformX-[50%] text-center cursor-default select-none'>
+            <div className='w-full text-[10px] text-zinc-500 font-400 absolute bottom-5 text-center cursor-default select-none'>
                 Tip: Use tone indicators in <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[brackets]</p> to make the output more interesting.<br />
                 For example: <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[excited] This is so much fun!</p><br />
                 For more information read <a target='_blank' className='inline underline text-zinc-400 hover:text-zinc-200 transition-colors' href='https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3-alpha'>the docs</a>
