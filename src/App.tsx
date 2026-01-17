@@ -22,7 +22,7 @@ function App() {
     const [showRateLimitNotice, setShowRateLimitNotice] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const messageSeparator = "_"
-    const maxLength = 500 - (values.stability + messageSeparator).length;
+    const maxLength = 500 - ("!say " + values.stability + messageSeparator).length;
 
     useEffect(() => {
         const sendQuery = async () => {
