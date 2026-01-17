@@ -13,7 +13,7 @@ const clipboardTextarea = ({value}: Props) => {
     const handleClipboardButtonClick = async () => {
         await navigator.clipboard.writeText(value);
         toast.success("Output copied to clipboard!", {
-            description: <p className='text-[12px] opacity-50 font-400'>Do not change any of the values when pasting to StreamElements</p>
+            description: <p className='text-[12px] opacity-50 font-400'>Do not change any of the values when sending your bits message in chat!</p>
         })
     }
 	return (
