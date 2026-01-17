@@ -73,6 +73,36 @@ app.post("/api/play-test-sample/", async (req, res) => {
     }
 });
 
+app.post("/api/get-tts/", async (req, res) => {
+    try {
+        const { stability, message, password } = req.body;
+
+        if(password != PASSWORD){
+            res.status(401).send();
+            return;
+        };
+
+        const webStream = await elevenlabs.textToSpeech.stream(voice_id, {
+            text: message,
+            modelId: process.env.MODEL_ID,
+            voiceSettings: {
+                stability: parseFloat(stability)
+            },
+        });
+
+        const nodeStream = Readable.fromWeb(webStream as any);
+        res.set({
+            'Content-Type': 'audio/mpeg',
+            'Transfer-Encoding': 'chunked',
+        });
+
+        nodeStream.pipe(res);
+    } catch (error) {
+        console.log(error);
+        res.json({error});
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Backend server is running on port ${PORT}`);
 });
