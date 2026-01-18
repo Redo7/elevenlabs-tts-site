@@ -27,7 +27,7 @@ app.use(cors({
     credentials: true,
 }))
 app.use(express.json());
-app.use(limiter);
+app.use("/api/play-test-sample/", limiter);
 app.use(cookieParser());
 
 if(voice_id === undefined) throw new Error("voice_id is not set");
