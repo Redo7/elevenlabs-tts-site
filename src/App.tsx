@@ -1,18 +1,18 @@
+import { Button } from './components/ui/button';
 import { LucidePlay } from 'lucide-react';
-import SettingSlider from './components/setting-slider';
+import { Separator } from './components/ui/separator';
+import { Spinner } from './components/ui/spinner';
+import { Textarea } from './components/ui/textarea';
 import { ThemeProvider } from './components/theme-provider';
 import { ThemeToggle } from './components/theme-toggle';
-import { Button } from './components/ui/button';
-import { Separator } from './components/ui/separator';
-import { Textarea } from './components/ui/textarea';
-import ClipboardTextarea from './components/clipboard-textarea';
-import { useEffect, useState } from 'react';
-import { Spinner } from './components/ui/spinner';
-import { Toaster } from "@/components/ui/sonner"
 import { toast } from 'sonner';
+import { Toaster } from "@/components/ui/sonner"
+import { useEffect, useState } from 'react';
+import ClipboardTextarea from './components/clipboard-textarea';
+import gsap from 'gsap';
+import SettingSlider from './components/setting-slider';
 
 function App() {
-
     const [values, setValues] = useState({
         stability: 0.5,
         originalMessage: ""
@@ -37,6 +37,21 @@ function App() {
             if(res.ok && params.size > 0) window.location.href = window.origin;
         }
         sendQuery();
+
+        gsap.to('.footer-notice', {
+            opacity: 1,
+            duration: 1,
+            stagger: 0.15,
+            ease: 'sine.in'
+        });
+
+        gsap.to('.main-container > *', {
+            opacity: 1,
+            duration: 0.3,
+            stagger: 0.1,
+            delay: 0.2,
+            ease: 'sine.in',
+        });
     }, [])
     
     const handleTextareaChange = ( e: React.ChangeEvent<HTMLTextAreaElement> ) => {
@@ -71,6 +86,11 @@ function App() {
         if(response.status === 429){
 		    setDisabled(false);
             setShowRateLimitNotice(true);
+            gsap.to('.rate-limit-notice', {
+                opacity: 1,
+                duration: 0.5,
+                ease: 'sine.in'
+            });
             toast.warning("You're being rate limited", {
                 description: <p className='text-[12px] opacity-50 font-400'>Try again in 5 minutes.</p>
             })
@@ -86,9 +106,9 @@ function App() {
 	return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <Toaster position="top-center"/>
-			<div className="flex relative h-full items-center gap-4 w-fit h-fit max-[850px]:flex-col max-[850px]:w-full max-[850px]:px-8 max-[850px]:justify-center">
-                {showRateLimitNotice && <p className='absolute top-[10%] text-[10px] text-zinc-500 font-400 text-center w-full max-[850px]:top-[2%]'>The site is mostly used for formatting the end output.<br/>The audio sample will say the same sentence regardless of your input.<br/>It will only react to the slider setting change so there isn't much point in playing it over and over.</p>}
-				<div className="w-full flex flex-col gap-4 items-center">
+			<div className="main-container flex relative h-full items-center gap-4 w-fit h-fit max-[850px]:flex-col max-[850px]:w-full max-[850px]:px-8 max-[850px]:justify-center">
+                {showRateLimitNotice && <p className='rate-limit-notice absolute top-[10%] text-[12px] text-zinc-500 font-400 text-center w-full max-[850px]:top-[2%] opacity-0'>The site is mostly used for formatting the end output.<br/>The audio sample will say the same sentence regardless of your input.<br/>It will only react to the slider setting change so there isn't much point in playing it over and over.</p>}
+				<div className="w-full flex flex-col gap-4 items-center opacity-0">
 					<SettingSlider onChange={handleSliderChange} step={0.5} id="stability" label="Stability"  defaultValue={0.5} tooltip='Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.'>
                         <div className="flex justify-between text-[10px] text-zinc-500 font-400 mb-1">
                             <p>Creative</p>
@@ -98,7 +118,7 @@ function App() {
                     </SettingSlider>
 					
                     <div className='relative mt-4 max-[850px]:w-full'>
-                        <div className='absolute z-1 -top-6 right-0'>
+                        <div className='absolute z-1 -top-7 right-0 align-middle'>
                             <p className={`inline text-[10px] ${values.originalMessage.length > maxLength ? 'text-[#ed1b53]' : 'text-zinc-500'} font-400 transition-colors`}>{values.originalMessage.length}</p>
                             <p className='inline text-[10px] text-zinc-500 font-400'>/{maxLength}</p>
                         </div>
@@ -109,14 +129,14 @@ function App() {
                     <p className='text-[10px] opacity-50 font-400'>The site will play a preset sample which reacts to your settings to save on tokens</p>
 				</div>
 
-				<Separator orientation={windowWidth <= 850 ? 'horizontal' : 'vertical'} className='max-h-[324px]' />
+				<Separator orientation={windowWidth <= 850 ? 'horizontal' : 'vertical'} className='max-h-[324px] opacity-0' />
 				<ClipboardTextarea value={values.originalMessage === "" ? "Waiting for input..." : output} />
 			</div>
 
-            <div className='w-full text-[10px] text-zinc-500 font-400 absolute bottom-5 text-center cursor-default select-none max-[850px]:bottom-[1%]'>
-                Tip: Use tone indicators in <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[brackets]</p> to make the output more interesting.<br />
-                For example: <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[excited] This is so much fun!</p><br />
-                For more information read <a target='_blank' className='inline underline text-zinc-400 hover:text-zinc-200 transition-colors' href='https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3-alpha'>the docs</a>
+            <div className='w-full text-[12px] text-zinc-500 font-400 absolute bottom-5 text-center cursor-default select-none max-[850px]:bottom-[1%] max-[850px]:text-[10px]'>
+                <div className='footer-notice opacity-0'>Tip: Use tone indicators in <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[brackets]</p> to make the output more interesting.</div>
+                <div className='footer-notice opacity-0'>For example: <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[excited] This is so much fun!</p></div>
+                <div className='footer-notice opacity-0'>For more information read <a target='_blank' className='inline underline text-zinc-400 hover:text-zinc-200 transition-colors' href='https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3-alpha'>the docs</a></div>
             </div>
 
             <div className="absolute top-5 right-5">
