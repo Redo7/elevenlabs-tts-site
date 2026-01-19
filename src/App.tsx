@@ -27,6 +27,8 @@ function App() {
     useEffect(() => {
         const sendQuery = async () => {
             const params = new URLSearchParams(window.location.search);
+            if(params.size === 0) return;
+            
             const password = params.get("password") ? params.get("password") : "";
             
             const res = await fetch(`/api/?password=${encodeURIComponent(password != null ? password : "")}`, {
