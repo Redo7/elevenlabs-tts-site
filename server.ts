@@ -90,11 +90,11 @@ app.post("/api/get-tts/", async (req, res) => {
             text: message,
             modelId: model,
             voiceSettings: model === "eleven_v3" ? {
-                stability
+                stability: parseFloat(stability)
             } : {
-                speed,
-                similarityBoost,
-                stability
+                speed: parseFloat(speed),
+                similarityBoost: parseFloat(similarityBoost),
+                stability: parseFloat(stability)
             },
         });
 
