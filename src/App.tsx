@@ -63,23 +63,24 @@ function App() {
 
     const [noticeVisible, setNoticeVisible] = useState(true);
     useEffect(() => {
-        gsap.to('.footer-notice', {
-            opacity: 0,
-            duration: 0.5,
-            stagger: 0.15,
-            ease: 'sine.in',
-            onComplete: () => {
-                setNoticeVisible(model === "eleven_v3")
-                setTimeout(() => {
-                    gsap.to('.footer-notice', {
-                        opacity: 1,
-                        duration: 1,
-                        stagger: 0.15,
-                        ease: 'sine.in',
-                    })
-                }, 50);
-            }
-        })
+        if(model === 'eleven_turbo_v2'){
+            gsap.to('.footer-notice', {
+                opacity: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: 'sine.in',
+            })
+        } else {
+            setNoticeVisible(model === "eleven_v3")
+            setTimeout(() => {
+                gsap.to('.footer-notice', {
+                    opacity: 1,
+                    duration: 0.5,
+                    stagger: 0.15,
+                    ease: 'sine.in',
+                })
+            }, 50);
+        }
         setValues({
             model: model === 'eleven_v3' ? 'v3' : 'v2',
             ...settings,
@@ -219,8 +220,8 @@ function App() {
                 {noticeVisible && <>
                     <div className='footer-notice opacity-0'>Tip: Use tone indicators in <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[brackets]</p> to make the output more interesting.</div>
                     <div className='footer-notice opacity-0'>For example: <p className='inline text-zinc-400 hover:text-zinc-200 transition-colors'>[excited] This is so much fun!</p></div>
+                    <div className='footer-notice opacity-0'>For more information read <a target='_blank' className='inline underline text-zinc-400 hover:text-zinc-200 transition-colors' href={`https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3-alpha`}>the docs</a></div>
                 </>}
-                <div className='footer-notice opacity-0'>For more information read <a target='_blank' className='inline underline text-zinc-400 hover:text-zinc-200 transition-colors' href={`https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices${model === "eleven_v3" ? "#prompting-eleven-v3-alpha" : ""}`}>the docs</a></div>
             </div>
 
             <div className="absolute top-5 right-5">
